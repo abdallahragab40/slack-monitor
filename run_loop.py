@@ -11,6 +11,9 @@ import os
 import sys
 from datetime import datetime
 import pytz
+from dotenv import load_dotenv
+
+load_dotenv()  # loads .env if present (no-op in production)
 
 # Path to the monitor script (same directory)
 MONITOR_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slack_monitor.py")

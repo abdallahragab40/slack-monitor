@@ -14,9 +14,12 @@ For Railway/Render, set the variables in the platform dashboard.
 import os
 import json
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from twilio.rest import Client
+
+load_dotenv()  # loads .env if present (no-op in production where vars are set directly)
 
 # ===========================================================================
 # CONFIGURATION — Set via environment variables
