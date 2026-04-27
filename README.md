@@ -51,11 +51,14 @@ pip install -r requirements.txt
 
 1. Go to [api.slack.com/apps](https://api.slack.com/apps) → **Create New App** → **From scratch**
 2. Name it (e.g. "My Monitor") and pick your workspace
-3. In the sidebar → **OAuth & Permissions** → add these **Bot Token Scopes**:
-   - `channels:history`, `groups:history`, `im:history`, `im:write`
-   - `users:read`, `channels:read`, `groups:read`
-4. Click **Install to Workspace** → Authorize
-5. Copy the **Bot OAuth Token** (`xoxb-...`)
+3. In the sidebar → **OAuth & Permissions** → add these **Bot Token Scopes** (used for channel @mentions):
+   - `channels:history`, `groups:history`, `users:read`, `channels:read`, `groups:read`
+4. **For DM monitoring**, also add these **User Token Scopes** (a bot token cannot see your personal DMs — only DMs sent to the bot itself):
+   - `im:history`, `im:read`, `mpim:history`, `users:read`
+5. Click **Install to Workspace** → Authorize
+6. Copy both tokens from the OAuth & Permissions page:
+   - **Bot User OAuth Token** (`xoxb-...`) → `SLACK_BOT_TOKEN`
+   - **User OAuth Token** (`xoxp-...`) → `SLACK_USER_TOKEN`
 
 > **Important:** Invite the bot to each channel you want to monitor — open the channel in Slack → channel name → Integrations → Add an App.
 
@@ -130,7 +133,8 @@ heroku ps:scale worker=1
 
 | Variable | Required | Description |
 |---|---|---|
-| `SLACK_BOT_TOKEN` | Yes | Bot OAuth token (`xoxb-...`) |
+| `SLACK_BOT_TOKEN` | Yes | Bot OAuth token (`xoxb-...`) — for channel @mention scanning |
+| `SLACK_USER_TOKEN` | For DMs | User OAuth token (`xoxp-...`) — required to monitor DMs to you |
 | `MY_SLACK_USER_ID` | Yes | Your Slack user ID |
 | `MONITORED_PEOPLE` | Yes | Comma-separated user IDs to watch DMs from |
 | `MONITORED_CHANNELS` | Yes | Comma-separated channel IDs to watch for mentions |
@@ -143,6 +147,7 @@ heroku ps:scale worker=1
 | `LOOKBACK_MINUTES` | No | How far back to scan messages (default: `60`) |
 | `SEND_WHATSAPP` | No | Enable WhatsApp alerts (default: `true`) |
 | `SEND_CALL` | No | Enable phone call alerts (default: `true`) |
+| `MAX_TEXT_CHARS` | No | Max chars of message text to include in WhatsApp body (default: `600`) |
 
 ---
 
